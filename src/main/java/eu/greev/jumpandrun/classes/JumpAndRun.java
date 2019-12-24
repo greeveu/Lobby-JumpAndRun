@@ -97,11 +97,21 @@ public class JumpAndRun {
         this.player = player;
     }
 
+    public Location getStartLocation() {
+        return this.startLocation;
+    }
+
     public void setStartLocation(Location location) {
         this.startLocation = location;
     }
 
     public Location getEndLocation() {
         return this.endLocation;
+    }
+
+    public void cancel() {
+        removeStartBlock();
+        removeEndBlock();
+        jumpAndRuns.remove(this);
     }
 }

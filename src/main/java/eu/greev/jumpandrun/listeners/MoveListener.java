@@ -1,7 +1,6 @@
 package eu.greev.jumpandrun.listeners;
 
 import eu.greev.jumpandrun.classes.JumpAndRun;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -17,10 +16,10 @@ public class MoveListener implements Listener {
         for(JumpAndRun jumpAndRun : JumpAndRun.jumpAndRuns) {
             if (jumpAndRun.getPlayer() == player) {
                 Block floorBlock = event.getTo().getBlock().getRelative(BlockFace.DOWN);
-                if (floorBlock.getType() != Material.WOOL) {
-                    return;
-                }
                 if (floorBlock.getLocation() != jumpAndRun.getEndLocation()) {
+                    if (floorBlock.getLocation().getBlockY() < jumpAndRun.getStartLocation().getBlockY() - 3) {
+                        jumpAndRun.cancel();
+                    }
                     return;
                 }
 
