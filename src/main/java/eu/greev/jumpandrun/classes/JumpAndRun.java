@@ -38,10 +38,20 @@ public class JumpAndRun {
         block.setData(this.colorCode);
     }
 
+    public void removeStartBlock() {
+        Block block = this.startLocation.getBlock();
+        block.setType(Material.AIR);
+    }
+
     public void placeEndBlock() {
         Block block = this.startLocation.getBlock();
         block.setType(Material.WOOL);
         block.setData(this.colorCode);
+    }
+
+    public void removeEndBlock() {
+        Block block = this.endLocation.getBlock();
+        block.setType(Material.AIR);
     }
 
     public void generateEndLocation() {
@@ -85,5 +95,13 @@ public class JumpAndRun {
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public void setStartLocation(Location location) {
+        this.startLocation = location;
+    }
+
+    public Location getEndLocation() {
+        return this.endLocation;
     }
 }
