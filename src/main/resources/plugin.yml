@@ -1,3 +1,3 @@
 name: JumpAndRun
 version: ${project.version}
-main: eu.greev.jumpandrun.JumpAndRun
+main: eu.greev.jumpandrun.JumpAndRuns
