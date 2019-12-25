@@ -1,5 +1,6 @@
 package eu.greev.jumpandrun.classes;
 
+import eu.greev.jumpandrun.JumpAndRuns;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -21,7 +22,7 @@ public class JumpAndRun {
     public JumpAndRun(Player player, Location startLocation) {
         this.player = player;
         this.startLocation = startLocation;
-        this.colorCode = (byte) Maths.randInt(0, 15);
+        this.colorCode = (byte) JumpAndRuns.getInstance().getMaths().randInt(0, 15);
         generateEndLocation();
 
         jumpAndRuns.add(this);
@@ -56,8 +57,8 @@ public class JumpAndRun {
 
     public void generateEndLocation() {
         int maxLength = 5;
-        int yAdd = Maths.randInt(0, 1);
-        int offset = Maths.randInt(0, 3);
+        int yAdd = JumpAndRuns.getInstance().getMaths().randInt(0, 1);
+        int offset = JumpAndRuns.getInstance().getMaths().randInt(0, 3);
         int xAdd;
         int zAdd;
 
