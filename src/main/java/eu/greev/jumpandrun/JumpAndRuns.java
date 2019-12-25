@@ -1,5 +1,6 @@
 package eu.greev.jumpandrun;
 
+import eu.greev.jumpandrun.classes.JumpAndRun;
 import eu.greev.jumpandrun.classes.Maths;
 import eu.greev.jumpandrun.listeners.InteractListener;
 import eu.greev.jumpandrun.listeners.MoveListener;
@@ -18,7 +19,9 @@ public final class JumpAndRuns extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        for (JumpAndRun jumpAndRun : JumpAndRun.jumpAndRuns.values()) {
+            jumpAndRun.cancel();
+        }
     }
 
     private void registerListeners() {
