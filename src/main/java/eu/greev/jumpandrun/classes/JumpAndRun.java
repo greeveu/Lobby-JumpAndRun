@@ -45,7 +45,7 @@ public class JumpAndRun {
     }
 
     public void placeEndBlock() {
-        Block block = this.startLocation.getBlock();
+        Block block = this.endLocation.getBlock();
         block.setType(Material.WOOL);
         block.setData(this.colorCode);
     }
