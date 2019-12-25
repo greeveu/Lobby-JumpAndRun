@@ -82,10 +82,11 @@ public class JumpAndRun {
             zAdd *= -1;
         }
 
-        this.endLocation = this.startLocation.add(
-            xAdd,
-            yAdd,
-            zAdd
+        this.endLocation = new Location(
+            this.startLocation.getWorld(),
+            this.startLocation.getX() + xAdd,
+            this.startLocation.getY() + yAdd,
+            this.startLocation.getZ() + zAdd
         );
     }
 
