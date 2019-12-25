@@ -26,12 +26,7 @@ public class MoveListener implements Listener {
             return;
         }
 
-        jumpAndRun.removeStartBlock();
-        jumpAndRun.setStartLocation(jumpAndRun.getEndLocation());
-        jumpAndRun.generateEndLocation();
-        jumpAndRun.placeStartBlock();
-        jumpAndRun.placeEndBlock();
-        jumpAndRun.setJumpCount(jumpAndRun.getJumpCount() + 1);
+        jumpAndRun.nextJump();
 
         return;
     }

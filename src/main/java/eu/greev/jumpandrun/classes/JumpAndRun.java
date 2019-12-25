@@ -3,6 +3,7 @@ package eu.greev.jumpandrun.classes;
 import eu.greev.jumpandrun.JumpAndRuns;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -31,6 +32,16 @@ public class JumpAndRun {
         placeEndBlock();
 
         player.teleport(this.startLocation.clone().add(0.5, 1, 0.5));
+    }
+
+    public void nextJump() {
+        this.player.playSound(this.player.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
+        removeStartBlock();
+        setStartLocation(this.endLocation);
+        generateEndLocation();
+        placeStartBlock();
+        placeEndBlock();
+        this.jumpCount++;
     }
 
     public void placeStartBlock() {
@@ -122,6 +133,7 @@ public class JumpAndRun {
     public void cancel() {
         removeStartBlock();
         removeEndBlock();
+        this.player.playSound(this.player.getLocation(), Sound.NOTE_BASS, 1, 1);
         jumpAndRuns.remove(this.player);
     }
 }
