@@ -30,7 +30,7 @@ public class JumpAndRun {
         placeStartBlock();
         placeEndBlock();
 
-        player.teleport(this.startLocation.add(0.5, 1, 0.5));
+        player.teleport(this.startLocation.clone().add(0.5, 1, 0.5));
     }
 
     public void placeStartBlock() {
