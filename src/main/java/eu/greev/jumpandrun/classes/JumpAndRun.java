@@ -13,6 +13,7 @@ public class JumpAndRun {
     public static List<JumpAndRun> jumpAndRuns = new ArrayList<>();
 
     private Player player;
+    private int jumpCount = 0;
 
     private Location startLocation;
     private Location endLocation;
@@ -109,6 +110,14 @@ public class JumpAndRun {
 
     public Location getEndLocation() {
         return this.endLocation;
+    }
+
+    public int getJumpCount() {
+        return jumpCount;
+    }
+
+    public void setJumpCount(int jumpCount) {
+        this.jumpCount = jumpCount;
     }
 
     public void cancel() {

@@ -16,7 +16,7 @@ public class MoveListener implements Listener {
         for(JumpAndRun jumpAndRun : JumpAndRun.jumpAndRuns) {
             if (jumpAndRun.getPlayer() == player) {
                 Block floorBlock = event.getTo().getBlock().getRelative(BlockFace.DOWN);
-                if (floorBlock.getLocation() != jumpAndRun.getEndLocation()) {
+                if (!floorBlock.getLocation().equals(jumpAndRun.getEndLocation())) {
                     if (floorBlock.getLocation().getBlockY() < jumpAndRun.getStartLocation().getBlockY() - 3) {
                         jumpAndRun.cancel();
                     }
@@ -28,6 +28,7 @@ public class MoveListener implements Listener {
                 jumpAndRun.generateEndLocation();
                 jumpAndRun.placeStartBlock();
                 jumpAndRun.placeEndBlock();
+                jumpAndRun.setJumpCount(jumpAndRun.getJumpCount() + 1);
 
                 return;
             }
