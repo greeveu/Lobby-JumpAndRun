@@ -6,11 +6,10 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 public class JumpAndRun {
-    public static List<JumpAndRun> jumpAndRuns = new ArrayList<>();
+    public static HashMap<Player, JumpAndRun> jumpAndRuns = new HashMap<>();
 
     private Player player;
     private int jumpCount = 0;
@@ -26,7 +25,7 @@ public class JumpAndRun {
         this.colorCode = (byte) JumpAndRuns.getInstance().getMaths().randInt(0, 15);
         generateEndLocation();
 
-        jumpAndRuns.add(this);
+        jumpAndRuns.put(player, this);
 
         placeStartBlock();
         placeEndBlock();
@@ -123,6 +122,6 @@ public class JumpAndRun {
     public void cancel() {
         removeStartBlock();
         removeEndBlock();
-        jumpAndRuns.remove(this);
+        jumpAndRuns.remove(this.player);
     }
 }

@@ -2,7 +2,6 @@ package eu.greev.jumpandrun.listeners;
 
 import eu.greev.jumpandrun.JumpAndRuns;
 import eu.greev.jumpandrun.classes.JumpAndRun;
-import eu.greev.jumpandrun.classes.Maths;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -30,10 +29,9 @@ public class InteractListener implements Listener {
         Player player = event.getPlayer();
         Location startLocation = block.getLocation();
 
-        for (JumpAndRun jumpAndRun : JumpAndRun.jumpAndRuns) {
-            if (jumpAndRun.getPlayer() == player) {
-                JumpAndRun.jumpAndRuns.remove(jumpAndRun);
-            }
+        JumpAndRun currentRun = JumpAndRun.jumpAndRuns.get(player);
+        if (currentRun != null) {
+            currentRun.cancel();
         }
 
         startLocation.setX(startLocation.getX() + JumpAndRuns.getInstance().getMaths().randInt(-5, 5));
