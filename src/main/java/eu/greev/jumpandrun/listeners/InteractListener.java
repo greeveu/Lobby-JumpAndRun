@@ -1,5 +1,6 @@
 package eu.greev.jumpandrun.listeners;
 
+import eu.greev.jumpandrun.JumpAndRuns;
 import eu.greev.jumpandrun.classes.JumpAndRun;
 import eu.greev.jumpandrun.classes.Maths;
 import org.bukkit.Location;
@@ -35,9 +36,9 @@ public class InteractListener implements Listener {
             }
         }
 
-        startLocation.setX(startLocation.getX() + Maths.randInt(-5, 5));
-        startLocation.setY(startLocation.getY() + Maths.randInt(20, 50));
-        startLocation.setZ(startLocation.getZ() + Maths.randInt(-5, 5));
+        startLocation.setX(startLocation.getX() + JumpAndRuns.getInstance().getMaths().randInt(-5, 5));
+        startLocation.setY(startLocation.getY() + JumpAndRuns.getInstance().getMaths().randInt(20, 50));
+        startLocation.setZ(startLocation.getZ() + JumpAndRuns.getInstance().getMaths().randInt(-5, 5));
 
         JumpAndRun jumpAndRun = new JumpAndRun(player, startLocation);
 
