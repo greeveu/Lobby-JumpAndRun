@@ -70,11 +70,11 @@ public class JumpAndRun {
         }
 
         if (Math.random() < 0.5) {
-            xAdd = maxLength;
+            xAdd = JumpAndRuns.getInstance().getMaths().randInt(2, maxLength);
             zAdd = offset;
         } else {
             xAdd = offset;
-            zAdd = maxLength;
+            zAdd = JumpAndRuns.getInstance().getMaths().randInt(2, maxLength);
         }
         if (Math.random() < 0.5) {
             xAdd *= -1;
