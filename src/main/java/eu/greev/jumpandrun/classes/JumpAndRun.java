@@ -7,6 +7,7 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 
@@ -21,6 +22,8 @@ public class JumpAndRun {
 
     private byte colorCode;
 
+    private BukkitTask task;
+
     public JumpAndRun(Player player, Location startLocation) {
         this.player = player;
         this.startLocation = startLocation;
@@ -34,10 +37,12 @@ public class JumpAndRun {
 
         player.teleport(this.startLocation.clone().add(0.5, 1, 0.5));
 
-        new BukkitRunnable() {
+        this.task = new BukkitRunnable() {
             @Override
             public void run() {
-                Output.sendActionBar(this.player, "Sprünge: " + Integer.toString(this.jumpCount));
+                String text = "$7Du hast bereits $e$l" + jumpCount + " $7$r";
+                text += jumpCount == 1 ? "Sprung geschafft" : "Sprünge geschafft";
+                Output.sendActionBar(player, text);
             }
         }.runTaskTimer(JumpAndRuns.getInstance(), 0, 20);
     }
@@ -144,6 +149,7 @@ public class JumpAndRun {
         removeStartBlock();
         removeEndBlock();
         this.player.playSound(this.player.getLocation(), Sound.NOTE_BASS, 1, 1);
+        this.task.cancel();
         jumpAndRuns.remove(this.player);
     }
 }
