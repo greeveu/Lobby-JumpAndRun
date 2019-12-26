@@ -4,6 +4,7 @@ import eu.greev.jumpandrun.classes.JumpAndRun;
 import eu.greev.jumpandrun.classes.Maths;
 import eu.greev.jumpandrun.listeners.InteractListener;
 import eu.greev.jumpandrun.listeners.MoveListener;
+import eu.greev.jumpandrun.listeners.QuitListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class JumpAndRuns extends JavaPlugin {
@@ -27,6 +28,7 @@ public final class JumpAndRuns extends JavaPlugin {
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(new InteractListener(), this);
         getServer().getPluginManager().registerEvents(new MoveListener(), this);
+        getServer().getPluginManager().registerEvents(new QuitListener(), this);
     }
 
     public static JumpAndRuns getInstance() {
