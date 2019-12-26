@@ -40,7 +40,7 @@ public class JumpAndRun {
         this.task = new BukkitRunnable() {
             @Override
             public void run() {
-                String text = "$7Du hast bereits $e$l" + jumpCount + " $7$r";
+                String text = "§7Du hast bereits §e§l" + jumpCount + " §r§7";
                 text += jumpCount == 1 ? "Sprung geschafft" : "Sprünge geschafft";
                 Output.sendActionBar(player, text);
             }
