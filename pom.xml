@@ -70,5 +70,12 @@
             <version>1.8.8-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>G:/Libraries/spigot-1.8.8.jar</systemPath>
+        </dependency>
     </dependencies>
 </project>
