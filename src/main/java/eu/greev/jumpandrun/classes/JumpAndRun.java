@@ -40,9 +40,7 @@ public class JumpAndRun {
         this.task = new BukkitRunnable() {
             @Override
             public void run() {
-                String text = "§7Du hast bereits §e§l" + jumpCount + " §r§7";
-                text += jumpCount == 1 ? "Sprung geschafft" : "Sprünge geschafft";
-                Output.sendActionBar(player, text);
+                Output.sendActionBar(player, getActionBarText());
             }
         }.runTaskTimer(JumpAndRuns.getInstance(), 0, 20);
     }
@@ -55,6 +53,7 @@ public class JumpAndRun {
         placeStartBlock();
         placeEndBlock();
         this.jumpCount++;
+        updateActionBar();
     }
 
     public void placeStartBlock() {
@@ -151,5 +150,16 @@ public class JumpAndRun {
         this.player.playSound(this.player.getLocation(), Sound.NOTE_BASS, 1, 1);
         this.task.cancel();
         jumpAndRuns.remove(this.player);
+    }
+
+    public String getActionBarText() {
+        String text = "§7Du hast bereits §e§l" + jumpCount + " §r§7";
+        text += jumpCount == 1 ? "Sprung geschafft" : "Sprünge geschafft";
+
+        return text;
+    }
+
+    public void updateActionBar() {
+        Output.sendActionBar(player, getActionBarText());
     }
 }
