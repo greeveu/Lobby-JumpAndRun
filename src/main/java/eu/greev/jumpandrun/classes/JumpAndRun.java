@@ -6,10 +6,6 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import net.minecraft.server.v1_8_R3.IChatBaseComponent;
-import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
-import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
@@ -41,7 +37,7 @@ public class JumpAndRun {
         new BukkitRunnable() {
             @Override
             public void run() {
-                sendActionBar(player, "TEXT");
+                Output.sendActionBar(this.player, "Sprünge: " + Integer.toString(this.jumpCount));
             }
         }.runTaskTimer(JumpAndRuns.getInstance(), 0, 20);
     }
@@ -149,23 +145,5 @@ public class JumpAndRun {
         removeEndBlock();
         this.player.playSound(this.player.getLocation(), Sound.NOTE_BASS, 1, 1);
         jumpAndRuns.remove(this.player);
-    }
-
-    public void sendActionBar(Player p, String msg) {
-        IChatBaseComponent cbc = IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + msg + "\"}");
-        PacketPlayOutChat ppoc = new PacketPlayOutChat(cbc, (byte) 2);
-        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(ppoc);
-    }
-
-    public void sendTitle(Player p, String text, String sbtext) {
-        IChatBaseComponent chatTitle = IChatBaseComponent.ChatSerializer.a("{text:\"§6" + text + "\"}");
-        IChatBaseComponent chatSubtitle = IChatBaseComponent.ChatSerializer.a("{text:\"" + sbtext + "\"}");
-        PacketPlayOutTitle packetPlayOutTimes = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TIMES, null, 10, 60, 10);
-        PacketPlayOutTitle packetPlayOutTitle = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TITLE, chatTitle);
-        PacketPlayOutTitle packetPlayOutSubitle = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.SUBTITLE, chatSubtitle);
-
-        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packetPlayOutTimes);
-        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packetPlayOutTitle);
-        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packetPlayOutSubitle);
     }
 }
