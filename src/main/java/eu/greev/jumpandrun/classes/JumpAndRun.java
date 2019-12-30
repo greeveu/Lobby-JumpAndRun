@@ -167,7 +167,9 @@ public class JumpAndRun {
 
     public void cancel() {
         removeStartBlock();
-        removeEndBlock();
+        if (this.endLocation != null) {
+            removeEndBlock();
+        }
         this.player.playSound(this.player.getLocation(), Sound.NOTE_BASS, 1, 1);
         this.task.cancel();
         jumpAndRuns.remove(this.player);
