@@ -46,14 +46,28 @@ public class JumpAndRun {
     }
 
     public void nextJump() {
-        this.player.playSound(this.player.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
         removeStartBlock();
         setStartLocation(this.endLocation);
-        generateEndLocation();
+
+        int tryCount = 0;
+        do {
+            generateEndLocation();
+            tryCount++;
+
+            if (tryCount >= 50) {
+                this.player.sendMessage(
+                    JumpAndRuns.prefix
+                    + "§cEs konnte leider keine freie Stelle für dich gefunden werden. Bitte versuche es noch einmal."
+                );
+                this.cancel();
+            }
+        } while (this.endLocation == null);
+
         placeStartBlock();
         placeEndBlock();
         this.jumpCount++;
         updateActionBar();
+        this.player.playSound(this.player.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
     }
 
     public void placeStartBlock() {
@@ -80,10 +94,14 @@ public class JumpAndRun {
 
     public void generateEndLocation() {
         int maxLength = 5;
-        int yAdd = JumpAndRuns.getInstance().getMaths().randInt(0, 1);
-        int offset = JumpAndRuns.getInstance().getMaths().randInt(0, 3);
+        int yAdd;
+        int offset;
         int xAdd;
         int zAdd;
+        Location newEndLocation;
+
+        yAdd = JumpAndRuns.getInstance().getMaths().randInt(0, 1);
+        offset = JumpAndRuns.getInstance().getMaths().randInt(0, 3);
 
         if (yAdd == 1) {
             maxLength--;
@@ -91,7 +109,6 @@ public class JumpAndRun {
         if (offset/2 == 1) {
             maxLength--;
         }
-
         if (Math.random() < 0.5) {
             xAdd = JumpAndRuns.getInstance().getMaths().randInt(2, maxLength);
             zAdd = offset;
@@ -106,12 +123,18 @@ public class JumpAndRun {
             zAdd *= -1;
         }
 
-        this.endLocation = new Location(
-            this.startLocation.getWorld(),
-            this.startLocation.getX() + xAdd,
-            this.startLocation.getY() + yAdd,
-            this.startLocation.getZ() + zAdd
+        newEndLocation = new Location(
+                this.startLocation.getWorld(),
+                this.startLocation.getX() + xAdd,
+                this.startLocation.getY() + yAdd,
+                this.startLocation.getZ() + zAdd
         );
+
+        if (newEndLocation.getBlock().getType() == Material.AIR) {
+            this.endLocation = newEndLocation;
+        } else {
+            this.endLocation = null;
+        }
     }
 
     public Player getPlayer() {

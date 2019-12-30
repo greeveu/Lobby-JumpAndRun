@@ -11,6 +11,7 @@ public final class JumpAndRuns extends JavaPlugin {
 
     Maths maths = new Maths();
     static JumpAndRuns t;
+    public static String prefix = "§a<§6Greev.eu§a>§7 ";
 
     @Override
     public void onEnable() {
