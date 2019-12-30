@@ -27,16 +27,30 @@ public class InteractListener implements Listener {
         }
 
         Player player = event.getPlayer();
-        Location startLocation = block.getLocation();
-
         JumpAndRun currentRun = JumpAndRun.jumpAndRuns.get(player);
         if (currentRun != null) {
             currentRun.cancel();
         }
 
-        startLocation.setX(startLocation.getX() + JumpAndRuns.getInstance().getMaths().randInt(-5, 5));
-        startLocation.setY(startLocation.getY() + JumpAndRuns.getInstance().getMaths().randInt(20, 50));
-        startLocation.setZ(startLocation.getZ() + JumpAndRuns.getInstance().getMaths().randInt(-5, 5));
+        Location startLocation;
+
+        int tryCount = 0;
+        do {
+            startLocation = block.getLocation();
+            startLocation.setX(startLocation.getX() + JumpAndRuns.getInstance().getMaths().randInt(-5, 5));
+            startLocation.setY(startLocation.getY() + JumpAndRuns.getInstance().getMaths().randInt(20, 50));
+            startLocation.setZ(startLocation.getZ() + JumpAndRuns.getInstance().getMaths().randInt(-5, 5));
+
+            tryCount++;
+            if (tryCount >= 50) {
+                player.sendMessage(
+                    JumpAndRuns.prefix
+                    + "§cEs konnte leider keine freie Stelle für dich gefunden werden. Bitte versuche es noch einmal."
+                );
+                event.setCancelled(true);
+                return;
+            }
+        } while (startLocation.getBlock().getType() != Material.AIR);
 
         JumpAndRun jumpAndRun = new JumpAndRun(player, startLocation);
 

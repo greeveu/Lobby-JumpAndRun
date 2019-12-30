@@ -88,8 +88,10 @@ public class JumpAndRun {
     }
 
     public void removeEndBlock() {
-        Block block = this.endLocation.getBlock();
-        block.setType(Material.AIR);
+        if (this.endLocation != null) {
+            Block block = this.endLocation.getBlock();
+            block.setType(Material.AIR);
+        }
     }
 
     public void generateEndLocation() {
@@ -167,9 +169,7 @@ public class JumpAndRun {
 
     public void cancel() {
         removeStartBlock();
-        if (this.endLocation != null) {
-            removeEndBlock();
-        }
+        removeEndBlock();
         this.player.playSound(this.player.getLocation(), Sound.NOTE_BASS, 1, 1);
         this.task.cancel();
         jumpAndRuns.remove(this.player);
