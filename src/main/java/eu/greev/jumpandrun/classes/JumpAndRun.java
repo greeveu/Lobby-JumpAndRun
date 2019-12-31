@@ -28,14 +28,13 @@ public class JumpAndRun {
         this.player = player;
         this.startLocation = startLocation;
         this.colorCode = (byte) JumpAndRuns.getInstance().getMaths().randInt(0, 15);
-        generateEndLocation();
-
-        jumpAndRuns.put(player, this);
 
         placeStartBlock();
-        placeEndBlock();
-
         player.teleport(this.startLocation.clone().add(0.5, 1, 0.5));
+        jumpAndRuns.put(player, this);
+
+        generateEndLocation();
+        placeEndBlock();
 
         this.task = new BukkitRunnable() {
             @Override

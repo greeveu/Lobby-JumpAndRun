@@ -5,13 +5,18 @@ import eu.greev.jumpandrun.classes.Maths;
 import eu.greev.jumpandrun.listeners.InteractListener;
 import eu.greev.jumpandrun.listeners.MoveListener;
 import eu.greev.jumpandrun.listeners.QuitListener;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.ArrayList;
 
 public final class JumpAndRuns extends JavaPlugin {
 
     Maths maths = new Maths();
     static JumpAndRuns t;
     public static String prefix = "§a<§6Greev.eu§a>§7 ";
+
+    public static ArrayList<Player> cooldownList = new ArrayList<>();
 
     @Override
     public void onEnable() {

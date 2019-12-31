@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 public class InteractListener implements Listener {
@@ -28,6 +29,12 @@ public class InteractListener implements Listener {
         }
 
         Player player = event.getPlayer();
+
+        if (JumpAndRuns.cooldownList.contains(player)) {
+            pushPlayerBack(player, block);
+            return;
+        }
+
         JumpAndRun currentRun = JumpAndRun.jumpAndRuns.get(player);
         if (currentRun != null) {
             currentRun.cancel();
@@ -49,9 +56,14 @@ public class InteractListener implements Listener {
                     + "§cEs konnte leider keine freie Stelle für dich gefunden werden. Bitte versuche es noch einmal."
                 );
 
-                Vector ent = player.getLocation().toVector().subtract(block.getLocation().toVector().add(new Vector(0, 1, 0)));
-                ent.setY(1.0D);
-                player.setVelocity(ent.multiply(0.5D));
+                pushPlayerBack(player, block);
+                JumpAndRuns.cooldownList.add(player);
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        JumpAndRuns.cooldownList.remove(player);
+                    }
+                }.runTaskLater(JumpAndRuns.getInstance(), 20);
 
                 event.setCancelled(true);
                 return;
@@ -61,5 +73,11 @@ public class InteractListener implements Listener {
         JumpAndRun jumpAndRun = new JumpAndRun(player, startLocation);
 
         event.setCancelled(true);
+    }
+
+    private void pushPlayerBack(Player player, Block block) {
+        Vector ent = player.getLocation().toVector().subtract(block.getLocation().toVector().add(new Vector(0, 1, 0)));
+        ent.setY(1.0D);
+        player.setVelocity(ent.multiply(0.5D));
     }
 }
