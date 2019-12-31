@@ -33,34 +33,22 @@ public class JumpAndRun {
         player.teleport(this.startLocation.clone().add(0.5, 1, 0.5));
         jumpAndRuns.put(player, this);
 
-        generateEndLocation();
-        placeEndBlock();
-
         this.task = new BukkitRunnable() {
             @Override
             public void run() {
                 Output.sendActionBar(player, getActionBarText());
             }
         }.runTaskTimer(JumpAndRuns.getInstance(), 0, 20);
+
+        tryGenerateEndLocation();
+        placeEndBlock();
     }
 
     public void nextJump() {
         removeStartBlock();
         setStartLocation(this.endLocation);
 
-        int tryCount = 0;
-        do {
-            generateEndLocation();
-            tryCount++;
-
-            if (tryCount >= 50) {
-                this.player.sendMessage(
-                    JumpAndRuns.prefix
-                    + "§cEs konnte leider keine freie Stelle für dich gefunden werden. Bitte versuche es noch einmal."
-                );
-                this.cancel();
-            }
-        } while (this.endLocation == null);
+        tryGenerateEndLocation();
 
         placeStartBlock();
         placeEndBlock();
@@ -91,6 +79,22 @@ public class JumpAndRun {
             Block block = this.endLocation.getBlock();
             block.setType(Material.AIR);
         }
+    }
+
+    public void tryGenerateEndLocation() {
+        int tryCount = 0;
+        do {
+            generateEndLocation();
+            tryCount++;
+
+            if (tryCount >= 50) {
+                this.player.sendMessage(
+                        JumpAndRuns.prefix
+                                + "§cEs konnte leider keine freie Stelle für dich gefunden werden. Bitte versuche es noch einmal."
+                );
+                this.cancel();
+            }
+        } while (this.endLocation == null);
     }
 
     public void generateEndLocation() {
