@@ -51,7 +51,7 @@ public class InteractListener implements Listener {
 
                 Vector ent = player.getLocation().toVector().subtract(block.getLocation().toVector().add(new Vector(0, 1, 0)));
                 ent.setY(1.0D);
-                player.setVelocity(ent.multiply(0.25D));
+                player.setVelocity(ent.multiply(0.5D));
 
                 event.setCancelled(true);
                 return;
