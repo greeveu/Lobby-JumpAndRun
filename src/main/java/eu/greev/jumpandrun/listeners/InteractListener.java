@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.util.Vector;
 
 public class InteractListener implements Listener {
     @EventHandler
@@ -47,6 +48,11 @@ public class InteractListener implements Listener {
                     JumpAndRuns.prefix
                     + "§cEs konnte leider keine freie Stelle für dich gefunden werden. Bitte versuche es noch einmal."
                 );
+
+                Vector ent = player.getLocation().toVector().subtract(block.getLocation().toVector().add(new Vector(0, 1, 0)));
+                ent.setY(1.0D);
+                player.setVelocity(ent.multiply(0.25D));
+
                 event.setCancelled(true);
                 return;
             }
