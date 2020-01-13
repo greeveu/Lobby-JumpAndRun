@@ -80,10 +80,14 @@ public class JumpAndRun {
 
     public void generateEndLocation() {
         int maxLength = 5;
-        int yAdd = JumpAndRuns.getInstance().getMaths().randInt(0, 1);
+        int yAdd = 0;
         int offset = JumpAndRuns.getInstance().getMaths().randInt(0, 3);
         int xAdd;
         int zAdd;
+
+        if (this.startLocation.getBlockY() < 256) {
+            yAdd = JumpAndRuns.getInstance().getMaths().randInt(0, 1);
+        }
 
         if (yAdd == 1) {
             maxLength--;
