@@ -63,7 +63,6 @@ public class JumpAndRun {
     }
 
     public void removeStartBlock() {
-        System.out.println(startLocation);
         Block block = this.startLocation.getBlock();
         block.setType(Material.AIR);
     }
@@ -75,7 +74,6 @@ public class JumpAndRun {
     }
 
     public void removeEndBlock() {
-        System.out.println(endLocation);
         Block block = this.endLocation.getBlock();
         block.setType(Material.AIR);
     }
