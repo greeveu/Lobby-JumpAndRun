@@ -4,15 +4,14 @@ import eu.greev.jumpandrun.classes.JumpAndRun;
 import eu.greev.jumpandrun.listeners.InteractListener;
 import eu.greev.jumpandrun.listeners.MoveListener;
 import eu.greev.jumpandrun.listeners.QuitListener;
+import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public final class JumpAndRuns extends JavaPlugin {
-    //TODO: add lombok
-
-    List<JumpAndRun> jumpAndRunList = new ArrayList<>();
+    @Getter List<JumpAndRun> jumpAndRunList = new ArrayList<>();
     static JumpAndRuns t;
 
     @Override
@@ -36,9 +35,5 @@ public final class JumpAndRuns extends JavaPlugin {
 
     public static JumpAndRuns getInstance() {
         return t;
-    }
-
-    public List<JumpAndRun> getJumpAndRunList() {
-        return this.jumpAndRunList;
     }
 }

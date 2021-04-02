@@ -3,6 +3,8 @@ package eu.greev.jumpandrun.classes;
 import eu.greev.jumpandrun.JumpAndRuns;
 import eu.greev.jumpandrun.utils.Maths;
 import eu.greev.jumpandrun.utils.Output;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -12,15 +14,13 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 public class JumpAndRun {
-    private Player player;
-    private int jumpCount = 0;
+    @Getter @Setter private Player player;
+    @Getter @Setter private int jumpCount = 0;
+    @Getter @Setter private Location startLocation;
+    @Getter private Location endLocation;
 
-    private Location startLocation;
-    private Location endLocation;
-
-    private byte colorCode;
-
-    private BukkitTask task;
+    private final byte colorCode;
+    private final BukkitTask task;
 
     public JumpAndRun(Player player, Location startLocation) {
         this.player = player;
@@ -114,34 +114,6 @@ public class JumpAndRun {
         );
     }
 
-    public Player getPlayer() {
-        return this.player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    public Location getStartLocation() {
-        return this.startLocation;
-    }
-
-    public void setStartLocation(Location location) {
-        this.startLocation = location;
-    }
-
-    public Location getEndLocation() {
-        return this.endLocation;
-    }
-
-    public int getJumpCount() {
-        return jumpCount;
-    }
-
-    public void setJumpCount(int jumpCount) {
-        this.jumpCount = jumpCount;
-    }
-
     public void cancel() {
         removeStartBlock();
         removeEndBlock();
@@ -159,6 +131,6 @@ public class JumpAndRun {
     }
 
     public void updateActionBar() {
-        Output.sendActionBar(player, getActionBarText());
+        Output.sendActionBar(this.player, this.getActionBarText());
     }
 }

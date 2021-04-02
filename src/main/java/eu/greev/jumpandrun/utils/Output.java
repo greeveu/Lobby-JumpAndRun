@@ -23,10 +23,10 @@ public class Output {
         IChatBaseComponent chatSubtitle = IChatBaseComponent.ChatSerializer.a("{text:\"" + sbtext + "\"}");
         PacketPlayOutTitle packetPlayOutTimes = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TIMES, null, 10, 60, 10);
         PacketPlayOutTitle packetPlayOutTitle = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TITLE, chatTitle);
-        PacketPlayOutTitle packetPlayOutSubitle = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.SUBTITLE, chatSubtitle);
+        PacketPlayOutTitle packetPlayOutSubtitle = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.SUBTITLE, chatSubtitle);
 
         ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packetPlayOutTimes);
         ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packetPlayOutTitle);
-        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packetPlayOutSubitle);
+        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packetPlayOutSubtitle);
     }
 }
