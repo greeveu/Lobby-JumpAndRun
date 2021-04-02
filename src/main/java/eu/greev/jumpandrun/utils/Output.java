@@ -1,4 +1,4 @@
-package eu.greev.jumpandrun.classes;
+package eu.greev.jumpandrun.utils;
 
 import org.bukkit.entity.Player;
 
@@ -8,6 +8,10 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 
 public class Output {
+    private Output() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static void sendActionBar(Player p, String msg) {
         IChatBaseComponent cbc = IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + msg + "\"}");
         PacketPlayOutChat ppoc = new PacketPlayOutChat(cbc, (byte) 2);

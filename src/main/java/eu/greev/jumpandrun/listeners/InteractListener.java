@@ -2,6 +2,7 @@ package eu.greev.jumpandrun.listeners;
 
 import eu.greev.jumpandrun.JumpAndRuns;
 import eu.greev.jumpandrun.classes.JumpAndRun;
+import eu.greev.jumpandrun.utils.Maths;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -29,16 +30,17 @@ public class InteractListener implements Listener {
         Player player = event.getPlayer();
         Location startLocation = block.getLocation();
 
-        JumpAndRun currentRun = JumpAndRun.jumpAndRuns.get(player);
-        if (currentRun != null) {
-            currentRun.cancel();
-        }
+        JumpAndRuns.getInstance().getJumpAndRunList().stream()
+            .filter(j -> j.getPlayer().equals(player))
+            .findFirst()
+            .ifPresent(JumpAndRun::cancel);
 
-        startLocation.setX(startLocation.getX() + JumpAndRuns.getInstance().getMaths().randInt(-5, 5));
-        startLocation.setY(startLocation.getY() + JumpAndRuns.getInstance().getMaths().randInt(20, 50));
-        startLocation.setZ(startLocation.getZ() + JumpAndRuns.getInstance().getMaths().randInt(-5, 5));
+        startLocation.setX(startLocation.getX() + Maths.randInt(-5, 5));
+        startLocation.setY(startLocation.getY() + Maths.randInt(20, 50));
+        startLocation.setZ(startLocation.getZ() + Maths.randInt(-5, 5));
 
         JumpAndRun jumpAndRun = new JumpAndRun(player, startLocation);
+        JumpAndRuns.getInstance().getJumpAndRunList().add(jumpAndRun);
 
         event.setCancelled(true);
     }

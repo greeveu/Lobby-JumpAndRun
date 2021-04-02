@@ -1,5 +1,6 @@
 package eu.greev.jumpandrun.listeners;
 
+import eu.greev.jumpandrun.JumpAndRuns;
 import eu.greev.jumpandrun.classes.JumpAndRun;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,11 +12,9 @@ public class QuitListener implements Listener {
     public void onQuitEvent(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        JumpAndRun jumpAndRun = JumpAndRun.jumpAndRuns.get(player);
-        if (jumpAndRun == null) {
-            return;
-        }
-
-        jumpAndRun.cancel();
+        JumpAndRuns.getInstance().getJumpAndRunList().stream()
+            .filter(j -> j.getPlayer().equals(player))
+            .findFirst()
+            .ifPresent(JumpAndRun::cancel);
     }
 }

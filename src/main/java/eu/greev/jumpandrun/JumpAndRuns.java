@@ -1,15 +1,18 @@
 package eu.greev.jumpandrun;
 
 import eu.greev.jumpandrun.classes.JumpAndRun;
-import eu.greev.jumpandrun.classes.Maths;
 import eu.greev.jumpandrun.listeners.InteractListener;
 import eu.greev.jumpandrun.listeners.MoveListener;
 import eu.greev.jumpandrun.listeners.QuitListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class JumpAndRuns extends JavaPlugin {
+import java.util.ArrayList;
+import java.util.List;
 
-    Maths maths = new Maths();
+public final class JumpAndRuns extends JavaPlugin {
+    //TODO: add lombok
+
+    List<JumpAndRun> jumpAndRunList = new ArrayList<>();
     static JumpAndRuns t;
 
     @Override
@@ -20,7 +23,7 @@ public final class JumpAndRuns extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        for (JumpAndRun jumpAndRun : JumpAndRun.jumpAndRuns.values()) {
+        for (JumpAndRun jumpAndRun : this.jumpAndRunList) {
             jumpAndRun.cancel();
         }
     }
@@ -35,7 +38,7 @@ public final class JumpAndRuns extends JavaPlugin {
         return t;
     }
 
-    public Maths getMaths() {
-        return maths;
+    public List<JumpAndRun> getJumpAndRunList() {
+        return this.jumpAndRunList;
     }
 }

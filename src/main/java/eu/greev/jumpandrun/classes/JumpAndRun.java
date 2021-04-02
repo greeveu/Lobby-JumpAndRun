@@ -1,6 +1,8 @@
 package eu.greev.jumpandrun.classes;
 
 import eu.greev.jumpandrun.JumpAndRuns;
+import eu.greev.jumpandrun.utils.Maths;
+import eu.greev.jumpandrun.utils.Output;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -9,11 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.HashMap;
-
 public class JumpAndRun {
-    public static HashMap<Player, JumpAndRun> jumpAndRuns = new HashMap<>();
-
     private Player player;
     private int jumpCount = 0;
 
@@ -27,10 +25,8 @@ public class JumpAndRun {
     public JumpAndRun(Player player, Location startLocation) {
         this.player = player;
         this.startLocation = startLocation;
-        this.colorCode = (byte) JumpAndRuns.getInstance().getMaths().randInt(0, 15);
+        this.colorCode = (byte) Maths.randInt(0, 15);
         generateEndLocation();
-
-        jumpAndRuns.put(player, this);
 
         placeStartBlock();
         placeEndBlock();
@@ -81,12 +77,12 @@ public class JumpAndRun {
     public void generateEndLocation() {
         int maxLength = 5;
         int yAdd = 0;
-        int offset = JumpAndRuns.getInstance().getMaths().randInt(0, 3);
+        int offset = Maths.randInt(0, 3);
         int xAdd;
         int zAdd;
 
         if (this.startLocation.getBlockY() < 256) {
-            yAdd = JumpAndRuns.getInstance().getMaths().randInt(0, 1);
+            yAdd = Maths.randInt(0, 1);
         }
 
         if (yAdd == 1) {
@@ -97,11 +93,11 @@ public class JumpAndRun {
         }
 
         if (Math.random() < 0.5) {
-            xAdd = JumpAndRuns.getInstance().getMaths().randInt(2, maxLength);
+            xAdd = Maths.randInt(2, maxLength);
             zAdd = offset;
         } else {
             xAdd = offset;
-            zAdd = JumpAndRuns.getInstance().getMaths().randInt(2, maxLength);
+            zAdd = Maths.randInt(2, maxLength);
         }
         if (Math.random() < 0.5) {
             xAdd *= -1;
@@ -151,7 +147,8 @@ public class JumpAndRun {
         removeEndBlock();
         this.player.playSound(this.player.getLocation(), Sound.NOTE_BASS, 1, 1);
         this.task.cancel();
-        jumpAndRuns.remove(this.player);
+
+        JumpAndRuns.getInstance().getJumpAndRunList().remove(this);
     }
 
     public String getActionBarText() {
