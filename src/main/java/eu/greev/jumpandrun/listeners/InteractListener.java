@@ -12,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.util.Vector;
 
 public class InteractListener implements Listener {
     @EventHandler
@@ -28,16 +29,31 @@ public class InteractListener implements Listener {
         }
 
         Player player = event.getPlayer();
-        Location startLocation = block.getLocation();
+        Location plateLocation = block.getLocation();
 
         JumpAndRuns.getInstance().getJumpAndRunList().stream()
             .filter(j -> j.getPlayer().equals(player))
             .findFirst()
             .ifPresent(JumpAndRun::cancel);
 
-        startLocation.setX(startLocation.getX() + Maths.randInt(-5, 5));
-        startLocation.setY(startLocation.getY() + Maths.randInt(20, 50));
-        startLocation.setZ(startLocation.getZ() + Maths.randInt(-5, 5));
+        Location startLocation = block.getLocation();
+        int count = 0;
+        do {
+            if (count > 50) {
+                player.sendMessage("[lang]lobby.jumpandrun.nostartfound[/lang]");
+
+                Vector vec = player.getLocation().toVector().subtract(plateLocation.toVector());
+                vec.setY(1.0D).normalize();
+                player.setVelocity(vec);
+
+                return;
+            }
+
+            startLocation.setX(plateLocation.getX() + Maths.randInt(-5, 5));
+            startLocation.setY(plateLocation.getY() + Maths.randInt(20, 50));
+            startLocation.setZ(plateLocation.getZ() + Maths.randInt(-5, 5));
+            count++;
+        } while (!startLocation.getBlock().isEmpty());
 
         JumpAndRun jumpAndRun = new JumpAndRun(player, startLocation);
         JumpAndRuns.getInstance().getJumpAndRunList().add(jumpAndRun);

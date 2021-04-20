@@ -5,13 +5,18 @@ import eu.greev.jumpandrun.utils.Maths;
 import eu.greev.jumpandrun.utils.Output;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.Vector;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.IntStream;
 
 public class JumpAndRun {
     @Getter @Setter private Player player;
@@ -26,30 +31,32 @@ public class JumpAndRun {
         this.player = player;
         this.startLocation = startLocation;
         this.colorCode = (byte) Maths.randInt(0, 15);
-        generateEndLocation();
+        boolean success = this.generateEndLocation(startLocation);
 
-        placeStartBlock();
-        placeEndBlock();
+        this.task = Bukkit.getScheduler().runTaskTimer(
+            JumpAndRuns.getInstance(),
+            () -> Output.sendActionBar(player, this.getActionBarText()),
+            0, 20
+        );
+
+        if (!success) return;
+
+        this.placeStartBlock();
+        this.placeEndBlock();
 
         player.teleport(this.startLocation.clone().add(0.5, 1, 0.5));
-
-        this.task = new BukkitRunnable() {
-            @Override
-            public void run() {
-                Output.sendActionBar(player, getActionBarText());
-            }
-        }.runTaskTimer(JumpAndRuns.getInstance(), 0, 20);
     }
 
     public void nextJump() {
         this.player.playSound(this.player.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
-        removeStartBlock();
-        setStartLocation(this.endLocation);
-        generateEndLocation();
-        placeStartBlock();
-        placeEndBlock();
+        this.removeStartBlock();
+        Location lastStartLoc = this.startLocation;
+        this.startLocation = this.endLocation;
+        this.generateEndLocation(lastStartLoc);
+        this.placeStartBlock();
+        this.placeEndBlock();
         this.jumpCount++;
-        updateActionBar();
+        this.updateActionBar();
     }
 
     public void placeStartBlock() {
@@ -59,6 +66,7 @@ public class JumpAndRun {
     }
 
     public void removeStartBlock() {
+        if (this.startLocation == null) return;
         Block block = this.startLocation.getBlock();
         block.setType(Material.AIR);
     }
@@ -70,64 +78,63 @@ public class JumpAndRun {
     }
 
     public void removeEndBlock() {
+        if (this.endLocation == null) return;
         Block block = this.endLocation.getBlock();
         block.setType(Material.AIR);
     }
 
-    public void generateEndLocation() {
-        int maxLength = 5;
-        int yAdd = 0;
-        int offset = Maths.randInt(0, 3);
-        int xAdd;
-        int zAdd;
+    private List<Vector> getPossibleJumpVectors(boolean yDown, boolean yUp) {
+        List<Vector> jumpLocations = new ArrayList<>();
 
-        if (this.startLocation.getBlockY() < 256) {
-            yAdd = Maths.randInt(0, 1);
-        }
+        IntStream.builder().add(-1).add(1).build().forEach(
+            xInvert -> IntStream.builder().add(-1).add(1).build().forEach(
+                zInvert -> IntStream.rangeClosed(yDown ? -1 : 0, yUp ? 1 : 0).forEach(
+                    yAdd -> IntStream.rangeClosed(0, 3).forEach(
+                        zAdd -> IntStream.rangeClosed(2, 5 - (yAdd + Math.abs(yAdd)) / 2 - Math.floorDiv(zAdd, 2)).forEach(
+                            xAdd -> jumpLocations.add(new Vector(xAdd * xInvert, yAdd, zAdd * zInvert))))))); //xAdd = length, zAdd = offset to the side
 
-        if (yAdd == 1) {
-            maxLength--;
-        }
-        if (offset/2 == 1) {
-            maxLength--;
-        }
+        return jumpLocations;
+    }
 
-        if (Math.random() < 0.5) {
-            xAdd = Maths.randInt(2, maxLength);
-            zAdd = offset;
-        } else {
-            xAdd = offset;
-            zAdd = Maths.randInt(2, maxLength);
-        }
-        if (Math.random() < 0.5) {
-            xAdd *= -1;
-        }
-        if (Math.random() < 0.5) {
-            zAdd *= -1;
-        }
+    public boolean generateEndLocation(Location lastStartLoc) {
+        List<Vector> jumpVectors = this.getPossibleJumpVectors(this.startLocation.getBlockY() > 200, this.startLocation.getBlockY() < 255);
 
-        this.endLocation = new Location(
-            this.startLocation.getWorld(),
-            this.startLocation.getX() + xAdd,
-            this.startLocation.getY() + yAdd,
-            this.startLocation.getZ() + zAdd
-        );
+        int index;
+        Vector vec;
+        Location loc;
+        do {
+            if (jumpVectors.isEmpty()) {
+                this.player.sendMessage("[lang]lobby.jumpandrun.noendfound[/lang]");
+                this.cancel();
+                return false;
+            }
+
+            index = Maths.randInt(0, jumpVectors.size() - 1);
+            vec = jumpVectors.get(index);
+            loc = this.startLocation.clone().add(vec);
+
+            jumpVectors.remove(index);
+        } while (lastStartLoc.equals(loc) || !loc.getBlock().isEmpty());
+
+        this.endLocation = loc;
+
+        return true;
     }
 
     public void cancel() {
-        removeStartBlock();
-        removeEndBlock();
+        this.removeStartBlock();
+        this.removeEndBlock();
         this.player.playSound(this.player.getLocation(), Sound.NOTE_BASS, 1, 1);
-        this.task.cancel();
+        if (this.task != null) this.task.cancel();
 
         JumpAndRuns.getInstance().getJumpAndRunList().remove(this);
     }
 
     public String getActionBarText() {
-        String text = "§7Du hast bereits §e§l" + jumpCount + " §r§7";
-        text += jumpCount == 1 ? "Sprung geschafft" : "Sprünge geschafft";
+//        String text = "§7Du hast bereits §e§l" + jumpCount + " §r§7";
+//        text += jumpCount == 1 ? "Sprung geschafft" : "Sprünge geschafft";
 
-        return text;
+        return String.format("[lang]lobby.jumpandrun.jumpcount[args][arg]%d[/arg][/args][/lang]", jumpCount);
     }
 
     public void updateActionBar() {

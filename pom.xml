@@ -57,7 +57,18 @@
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
+        <repository>
+            <id>greev-repo</id>
+            <url>https://maven.greev.eu</url>
+        </repository>
     </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>greev-repo</id>
+            <url>https://maven.greev.eu</url>
+        </repository>
+    </distributionManagement>
 
     <dependencies>
         <dependency>

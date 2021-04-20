@@ -19,6 +19,7 @@ public class MoveListener implements Listener {
         Optional<JumpAndRun> jumpAndRun = JumpAndRuns.getInstance().getJumpAndRunList().stream()
             .filter(j -> j.getPlayer().equals(player))
             .findFirst();
+
         if (!jumpAndRun.isPresent()) {
             return;
         }

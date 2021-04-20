@@ -11,8 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class JumpAndRuns extends JavaPlugin {
-    @Getter List<JumpAndRun> jumpAndRunList = new ArrayList<>();
-    static JumpAndRuns t;
+    public static final String prefix = "[lang]prefix[/lang]";
+
+    @Getter private List<JumpAndRun> jumpAndRunList = new ArrayList<>();
+    private static JumpAndRuns t;
 
     @Override
     public void onEnable() {
@@ -22,9 +24,7 @@ public final class JumpAndRuns extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        for (JumpAndRun jumpAndRun : this.jumpAndRunList) {
-            jumpAndRun.cancel();
-        }
+        this.jumpAndRunList.forEach(JumpAndRun::cancel);
     }
 
     private void registerListeners() {
