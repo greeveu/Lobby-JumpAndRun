@@ -21,10 +21,7 @@ public class InteractListener implements Listener {
             return;
         }
         Block block = event.getClickedBlock();
-        if (block.getType() != Material.GOLD_PLATE) {
-            return;
-        }
-        if (block.getRelative(BlockFace.DOWN).getType() != Material.STAINED_CLAY) {
+        if (block.getType() != Material.GOLD_PLATE && block.getRelative(BlockFace.DOWN).getType() != Material.STAINED_CLAY) {
             return;
         }
 
@@ -53,7 +50,7 @@ public class InteractListener implements Listener {
             startLocation.setY(plateLocation.getY() + Maths.randInt(20, 50));
             startLocation.setZ(plateLocation.getZ() + Maths.randInt(-5, 5));
             count++;
-        } while (!startLocation.getBlock().isEmpty());
+        } while (!startLocation.getBlock().isEmpty() || !startLocation.getBlock().getRelative(BlockFace.UP).isEmpty());
 
         JumpAndRun jumpAndRun = new JumpAndRun(player, startLocation);
         JumpAndRuns.getInstance().getJumpAndRunList().add(jumpAndRun);
