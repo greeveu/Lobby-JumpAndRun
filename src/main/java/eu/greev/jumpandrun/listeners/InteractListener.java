@@ -21,7 +21,7 @@ public class InteractListener implements Listener {
             return;
         }
         Block block = event.getClickedBlock();
-        if (block.getType() != Material.GOLD_PLATE && block.getRelative(BlockFace.DOWN).getType() != Material.STAINED_CLAY) {
+        if (block.getType() != Material.GOLD_PLATE || block.getRelative(BlockFace.DOWN).getType() != Material.STAINED_CLAY) {
             return;
         }
 
