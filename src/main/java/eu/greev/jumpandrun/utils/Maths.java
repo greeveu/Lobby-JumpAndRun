@@ -1,11 +1,13 @@
 package eu.greev.jumpandrun.utils;
 
-import java.util.SplittableRandom;
+import java.util.Random;
 
 public class Maths {
     private Maths() {
         throw new IllegalStateException("Utility class");
     }
+
+    private static final Random RANDOM = new Random();
 
     /**
      * @param min Min value (inclusive)
@@ -17,6 +19,6 @@ public class Maths {
             throw new IllegalArgumentException("min must be smaller than max!");
         }
 
-        return new SplittableRandom().nextInt((max - min) + 1) + min;
+        return RANDOM.nextInt((max - min) + 1) + min;
     }
 }

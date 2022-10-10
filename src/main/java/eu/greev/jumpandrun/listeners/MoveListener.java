@@ -16,22 +16,23 @@ public class MoveListener implements Listener {
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
 
-        Optional<JumpAndRun> jumpAndRun = JumpAndRuns.getInstance().getJumpAndRunList().stream()
+        Optional<JumpAndRun> optionalJumpAndRun = JumpAndRuns.getInstance().getJumpAndRunList().stream()
             .filter(j -> j.getPlayer().equals(player))
             .findFirst();
 
-        if (!jumpAndRun.isPresent()) {
+        if (!optionalJumpAndRun.isPresent()) {
             return;
         }
 
+        JumpAndRun jumpAndRun = optionalJumpAndRun.get();
         Block floorBlock = event.getTo().getBlock().getRelative(BlockFace.DOWN);
-        if (!floorBlock.getLocation().equals(jumpAndRun.get().getEndLocation())) {
-            if (floorBlock.getLocation().getBlockY() < jumpAndRun.get().getStartLocation().getBlockY() - 3) {
-                jumpAndRun.get().cancel();
+        if (!floorBlock.getLocation().equals(jumpAndRun.nextBlock())) {
+            if (floorBlock.getLocation().getY() < jumpAndRun.currentBlock().getY() - 3) {
+                jumpAndRun.cancel();
             }
             return;
         }
 
-        jumpAndRun.get().nextJump();
+        jumpAndRun.nextJump();
     }
 }

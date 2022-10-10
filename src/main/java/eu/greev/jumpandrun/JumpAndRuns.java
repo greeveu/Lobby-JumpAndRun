@@ -13,12 +13,12 @@ import java.util.List;
 public final class JumpAndRuns extends JavaPlugin {
     public static final String prefix = "[lang]prefix[/lang]";
 
-    @Getter private List<JumpAndRun> jumpAndRunList = new ArrayList<>();
-    private static JumpAndRuns t;
+    @Getter private final List<JumpAndRun> jumpAndRunList = new ArrayList<>();
+    @Getter private static JumpAndRuns instance;
 
     @Override
     public void onEnable() {
-        t = this;
+        instance = this;
         registerListeners();
     }
 
@@ -31,9 +31,5 @@ public final class JumpAndRuns extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new InteractListener(), this);
         getServer().getPluginManager().registerEvents(new MoveListener(), this);
         getServer().getPluginManager().registerEvents(new QuitListener(), this);
-    }
-
-    public static JumpAndRuns getInstance() {
-        return t;
     }
 }
