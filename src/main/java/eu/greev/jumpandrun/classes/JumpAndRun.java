@@ -115,7 +115,7 @@ public class JumpAndRun {
 
             vec = possibleJumpVectors.poll();
             loc = last.clone().add(vec);
-        } while (!loc.getBlock().isEmpty());
+        } while (!(loc.getBlock().isEmpty() && loc.clone().add(0,1,0).getBlock().isEmpty() && loc.clone().add(0,2,0).getBlock().isEmpty()));
 
         this.jumps.add(loc);
 
