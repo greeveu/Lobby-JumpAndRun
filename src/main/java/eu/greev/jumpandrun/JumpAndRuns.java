@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class JumpAndRuns extends JavaPlugin {
-    public static final String prefix = "[lang]prefix[/lang]";
-
-    @Getter private final List<JumpAndRun> jumpAndRunList = new ArrayList<>();
-    @Getter private static JumpAndRuns instance;
+    @Getter
+    private final List<JumpAndRun> jumpAndRunList = new ArrayList<>();
+    @Getter
+    private static JumpAndRuns instance;
 
     @Override
     public void onEnable() {
